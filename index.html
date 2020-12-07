@@ -19,8 +19,7 @@
             <h2>未完了のタスク</h2>
             <ul>
                 <template v-for="(item, index) in items">
-                    <li :class="{'isDone': item.isDone}" :key="index"><label><input type="checkbox"
-                                v-model="item.isDone" @change="updateStorage(); completeItem()">{{ item.name }} |
+                    <li :key="index"><label>{{ item.name }} |
                             {{ item.category }} |
                             {{ item.deadline }}</label></li>
                 </template>
@@ -28,16 +27,6 @@
             <button v-on:click="deleteItemChecked()">チェック済みの項目を削除する</button>
             <button @click="resetStorage()">localStorageリセット</button>
             <pre>{{$data}}</pre>
-
-            <h2>完了済みのタスク</h2>
-            <ul>
-                <template v-for="(completedItem, index) in completedItems">
-                    <li :class="{'isDone': completedItem.isDone}" :key="index"><label><input type="checkbox"
-                                v-model="completedItem.isDone" @change="updateStorage()">{{ completedItem.name }} |
-                            {{ completedItem.category }} |
-                            {{ completedItem.deadline }}</label></li>
-                </template>
-            </ul>
 
         </form>
     </div>
@@ -108,21 +97,18 @@
                     this.items = this.items.filter(function (item) {
                         return item.isDone === false;
                     });
-                },
-                completeItem: function () {
-                    let completedItems = this.items.filter(function (item) {
-                        return item.isDone === true;
-                    });
-                    this.completedItems.push(...completedItems);
-                    this.deleteItemChecked();
                 }
             }
         })
     </script>
     <style>
+        body {
+            box-sizing: border-box;
+        }
         ul {
             display: flex;
-            justify-content: space-between;
+            flex-wrap:wrap;
+            margin-right: -10px;
         }
 
         li {
@@ -131,6 +117,7 @@
             display: block;
             width: calc(100% / 4 - 10px);
             margin-bottom: 10px;
+            margin-right: 10px;
         }
     </style>
 </body>
