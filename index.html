@@ -14,7 +14,7 @@
         <form v-on:submit.prevent>
             <input type="text" v-model="newItem"><button @click="addItem">Add</button>
             <ul>
-                <li v-for="(memo, index) in memos"><input type="checkbox" v-model="memo.isDone">{{ memo.item }}<button @click="deleteItem(index)">Delete</button></li>
+                <li v-for="(memo, index) in memos">{{ memo.item }}<button @click="deleteItem(index)">Delete</button></li>
             </ul>
         </form>
         <pre>{{$data}}</pre>
@@ -32,8 +32,7 @@
                     if(this.newItem == null) return;
                     // オブジェクトをプッシュするときは変数に入れるとスッキリする
                     let memo = {
-                        item: this.newItem,
-                        isDone: false
+                        item: this.newItem
                     }
                     this.memos.push(memo);
                     this.newItem = null;
