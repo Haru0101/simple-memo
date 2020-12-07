@@ -4,17 +4,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Todo List</title>
+    <title>Simple memos</title>
 </head>
 
 <body>
     <div id="app">
-        <h1>TODO LIST</h1>
+        <h1>Simple memos</h1>
         <!-- 送信して違うページに行かないようにサブミットを制御 -->
         <form v-on:submit.prevent>
             <input type="text" v-model="newItem"><button @click="addItem">Add</button>
             <ul>
-                <li v-for="(task, index) in tasks" :class="{'isDone': task.isDone}"><input type="checkbox" v-model="task.isDone">{{ task.item }}<button @click="deleteItem(index)">Delete</button></li>
+                <li v-for="(memo, index) in memos"><input type="checkbox" v-model="memo.isDone">{{ memo.item }}<button @click="deleteItem(index)">Delete</button></li>
             </ul>
         </form>
         <pre>{{$data}}</pre>
@@ -24,31 +24,40 @@
         var app = new Vue({
             el: '#app',
             data: {
-                newItem: null,　
-                tasks: [],
+                newItem: null,
+                memos: [],
             },
             methods: {
                 addItem: function () {
                     if(this.newItem == null) return;
                     // オブジェクトをプッシュするときは変数に入れるとスッキリする
-                    let task = {
+                    let memo = {
                         item: this.newItem,
                         isDone: false
                     }
-                    this.tasks.push(task);
+                    this.memos.push(memo);
                     this.newItem = null;
                 },
                 deleteItem: function (index) {
                     // 第一引数：削除を開始する位置
                     // 第二引数：削除する数
-                    this.tasks.splice(index, 1);
+                    this.memos.splice(index, 1);
                 }
             }
         })
     </script>
     <style>
-        .isDone {
-            text-decoration: line-through;
+        ul {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        li {
+            padding: 20px;
+            border: solid 1px #aaa;
+            display: block;
+            width: calc(100% / 4 - 10px);
+            margin-bottom: 10px;
         }
     </style>
 </body>
