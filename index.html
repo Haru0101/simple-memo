@@ -12,14 +12,19 @@
         <h1>Simple memos</h1>
         <!-- 送信して違うページに行かないようにサブミットを制御 -->
         <form v-on:submit.prevent>
-            <label for="title">タイトル<br><input type="text" name="title" id="title"></label><br>
+            <label for="title">タイトル<br><input type="text" name="title" id="title" v-model="newItem.title"></label><br>
             <label for="body">内容<br><textarea id="body" v-model="newItem.body"></textarea></label>
             <button @click="addItem">Add</button>
             <h2>メモ一覧</h2>
             <ul>
                 <template v-for="(item, index) in items">
-                    <li :key="index"><label>{{ item.body }} |
-                            {{ item.dates }}</label></li>
+                    <li :key="index"><label for="dd">
+                        <h2>{{ item.title }}</h2>
+                        <p>{{ item.body }}</p>
+                        <date>{{ item.dates }}</date>
+                        <input type="checkbox" name="" id="dd">
+                    </label>
+                    </li>
                 </template>
             </ul>
             <button v-on:click="deleteItemChecked()">チェック済みの項目を削除する</button>
@@ -60,6 +65,7 @@
                     this.items.push(item);
                     // this.updateStorage();
                     console.log(localStorage);
+                    this.newItem.title = null;
                     this.newItem.body = null;
                     this.newItem.dates = null;
                     this.updateStorage();
@@ -89,9 +95,10 @@
         body {
             box-sizing: border-box;
         }
+
         ul {
             display: flex;
-            flex-wrap:wrap;
+            flex-wrap: wrap;
             margin-right: -10px;
         }
 
@@ -102,6 +109,10 @@
             width: calc(100% / 4 - 10px);
             margin-bottom: 10px;
             margin-right: 10px;
+        }
+        label:checked {
+            background-color: #aaa;
+            display: block;
         }
     </style>
 </body>
