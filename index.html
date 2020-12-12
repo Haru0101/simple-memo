@@ -18,10 +18,10 @@
             <h2>メモ一覧</h2>
             <ul>
                 <template v-for="(item, index) in items">
-                    <li :key="index"><input type="checkbox" name="" id="dd"><label for="dd">
+                    <li :key="index"><input :id="['memo' + index]" type="checkbox"><label class="memo" :for="['memo' + index]">
                         <h2>{{ item.title }}</h2>
                         <p>{{ item.body }}</p>
-                        <date>{{ item.dates }}</date>
+                        <p>{{ item.dates }}</p>
                     </label>
                     </li>
                 </template>
@@ -109,7 +109,7 @@
             margin-right: 10px;
         }
 
-        label { 
+        label.memo{ 
             padding: 20px;
             display: block;
         }
@@ -127,7 +127,7 @@
             width: 1px;
         }
 
-        input[type=checkbox]:checked + label {
+        input[type=checkbox]:checked ~ label {
             background-color: #aaa;
         }
     </style>
