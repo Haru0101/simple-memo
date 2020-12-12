@@ -4,34 +4,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/style.css">
     <title>Simple memos</title>
 </head>
 
 <body>
     <div id="app">
-        <h1>Simple memos</h1>
-        <!-- 送信して違うページに行かないようにサブミットを制御 -->
-        <form v-on:submit.prevent>
-            <label for="title">タイトル<br><input type="text" name="title" id="title" v-model="newItem.title"></label><br>
-            <label for="body">内容<br><textarea id="body" v-model="newItem.body"></textarea></label>
-            <button @click="addItem">Add</button>
-            <h2>メモ一覧</h2>
-            <ul>
-                <template v-for="(item, index) in items">
-                    <li :key="index"><input :id="['memo' + index]" type="checkbox"><label class="memo" :for="['memo' + index]">
-                        <h2>{{ item.title }}</h2>
-                        <p>{{ item.body }}</p>
-                        <p>{{ item.dates }}</p>
-                    </label>
-                    </li>
-                </template>
-            </ul>
-            <button v-on:click="deleteItemChecked()">チェック済みの項目を削除する</button>
-            <button @click="resetStorage()">localStorageリセット</button>
-            <pre>{{$data}}</pre>
+        <main>
+            <h1>Simple memos</h1>
+            <!-- 送信して違うページに行かないようにサブミットを制御 -->
+            <form v-on:submit.prevent>
+                <label for="title">タイトル<br><input type="text" name="title" id="title"
+                        v-model="newItem.title"></label><br>
+                <label for="body">内容<br><textarea id="body" v-model="newItem.body"></textarea></label>
+                <button @click="addItem">Add</button>
+                <h2>メモ一覧</h2>
+                <ul>
+                    <template v-for="(item, index) in items">
+                        <li :key="index"><input :id="['memo' + index]" type="checkbox" v-model="item.isDone"><label
+                                class="memo" :for="['memo' + index]">
+                                <h3>{{ item.title }}</h3>
+                                <p class="memoContent">{{ item.body }}</p>
+                                <p class="date">{{ item.dates }}</p>
+                            </label>
+                        </li>
+                    </template>
+                </ul>
+                <button v-on:click="deleteItemChecked()">チェックしたメモを削除</button>
+                <!-- <button @click="resetStorage()">localStorageリセット</button> -->
+                <!-- <pre>{{$data}}</pre> -->
 
-        </form>
+            </form>
     </div>
+    </main>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script>
         var app = new Vue({
@@ -40,7 +46,7 @@
                 newItem: {
                     title: null,
                     body: null,
-                    dates: null,
+                    dates: null
                 },
                 items: [],
             },
@@ -58,7 +64,8 @@
                     let item = {
                         title: this.newItem.title,
                         body: this.newItem.body,
-                        dates: now.toLocaleString()
+                        dates: now.toLocaleString(),
+                        isDone: false
                     };
 
                     this.items.push(item);
@@ -86,51 +93,16 @@
                 updateStorage: function () {
                     console.log('updateStorage');
                     localStorage.setItem('items', JSON.stringify(this.items));
+                },
+                deleteItemChecked: function () {
+                    // isDoneがtrueのものだけがreturn trueされ、新たな配列として格納される
+                    this.items = this.items.filter(function (item) {
+                        return item.isDone === false;
+                    });
                 }
             }
         })
     </script>
-    <style>
-        body {
-            box-sizing: border-box;
-        }
-
-        ul {
-            display: flex;
-            flex-wrap: wrap;
-            margin-right: -10px;
-        }
-
-        li {
-            border: solid 1px #aaa;
-            display: block;
-            width: calc(100% / 4 - 10px);
-            margin-bottom: 10px;
-            margin-right: 10px;
-        }
-
-        label.memo{ 
-            padding: 20px;
-            display: block;
-        }
-
-        input[type=checkbox] {
-            border: 0;
-            clip: rect(0 0 0 0);
-            clip-path: inset(50%);
-            height: 1px;
-            margin: -1px;
-            overflow: hidden;
-            padding: 0;
-            position: absolute;
-            white-space: nowrap;
-            width: 1px;
-        }
-
-        input[type=checkbox]:checked ~ label {
-            background-color: #aaa;
-        }
-    </style>
 </body>
 
 </html>
